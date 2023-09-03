@@ -23,7 +23,7 @@ func WithContextGetBooks(ctx context.Context) gin.HandlerFunc {
 			return
 		}
 
-		var books entities.BookModel
+		var books entities.Books
 		result := db.Find(&books)
 
 		if result.Error != nil {
