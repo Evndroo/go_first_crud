@@ -27,11 +27,11 @@ func main() {
 		panic(connectionError)
 	}
 
-	utils.WithDbContext(ctx, db)
+	ctx = utils.WithDbContext(ctx, db)
 
 	server := gin.Default()
 
-	books.Configure(server)
+	books.Configure(server, ctx)
 
 	server.Run()
 }
