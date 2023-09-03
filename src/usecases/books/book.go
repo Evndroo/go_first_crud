@@ -6,24 +6,53 @@ import (
 	"net/http"
 
 	"github.com/evndroo/src/entities"
+	"github.com/evndroo/src/usecases/context/utils"
 
 	"github.com/gin-gonic/gin"
-	"gorm.io/gorm"
 )
 
-func WithContextGetBooks(ctx context.Context) gin.HandlerFunc {
+func WithContextGetBooksById(ctx context.Context) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		db, success := ctx.Value("db").(*gorm.DB)
+		db, success := utils.GetDbFromContext(ctx)
 
 		if !success {
-			log.Fatalln("Error getting db from context")
 			c.JSON(http.StatusInternalServerError, gin.H{
 				"message": "Sorry, we have a problem, please try again later.",
 			})
 			return
 		}
 
-		var books entities.Books
+		var book entities.Books
+		db.Find(&book, c.Param("id"))
+
+		if book.ID == 0 {
+			c.JSON(http.StatusNoContent, gin.H{
+				"message": "No book where found",
+			})
+			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{
+			"id":     book.ID,
+			"title":  book.Title,
+			"author": book.Author,
+		})
+
+	}
+}
+
+func WithContextGetBooks(ctx context.Context) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		db, success := utils.GetDbFromContext(ctx)
+
+		if !success {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"message": "Sorry, we have a problem, please try again later.",
+			})
+			return
+		}
+
+		var books []entities.Books
 		result := db.Find(&books)
 
 		if result.Error != nil {
@@ -34,10 +63,16 @@ func WithContextGetBooks(ctx context.Context) gin.HandlerFunc {
 			return
 		}
 
-		c.JSON(http.StatusOK, gin.H{
-			"id":     books.ID,
-			"title":  books.Title,
-			"author": books.Author,
-		})
+		response := []gin.H{}
+
+		for _, book := range books {
+			response = append(response, gin.H{
+				"id":     book.ID,
+				"title":  book.Title,
+				"author": book.Author,
+			})
+		}
+
+		c.JSON(http.StatusOK, response)
 	}
 }

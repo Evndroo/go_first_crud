@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"log"
 	"os"
 
 	"github.com/evndroo/src/config"
@@ -23,7 +24,7 @@ func main() {
 	db, connectionError := config.ConnectDB()
 
 	if connectionError != nil {
-		fmt.Println("Error connecting to database: ", connectionError)
+		log.Fatalln("Error connecting to database: ", connectionError)
 		panic(connectionError)
 	}
 
