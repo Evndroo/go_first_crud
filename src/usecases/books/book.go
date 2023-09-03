@@ -26,9 +26,7 @@ func WithContextGetBooksById(ctx context.Context) gin.HandlerFunc {
 		db.Find(&book, c.Param("id"))
 
 		if book.ID == 0 {
-			c.JSON(http.StatusNoContent, gin.H{
-				"message": "No book where found",
-			})
+			c.Status(http.StatusNoContent)
 			return
 		}
 
