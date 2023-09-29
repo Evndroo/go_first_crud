@@ -11,6 +11,6 @@ import (
 func Configure(server *gin.Engine, ctx context.Context) {
 	booksServer := server.Group("/books")
 
-	booksServer.GET("/", books.GetAllBooks(ctx))
-	booksServer.GET("/:id", books.GetBooksById(ctx))
+	booksServer.GET("/", books.WithContextGetAllBooks(ctx))
+	booksServer.GET("/:id", books.WithContextGetBooksById(ctx))
 }
