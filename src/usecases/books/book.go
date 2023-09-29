@@ -11,7 +11,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func WithContextGetBooksById(ctx context.Context) gin.HandlerFunc {
+func GetBooksById(ctx context.Context) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		db, success := utils.GetDbFromContext(ctx)
 
@@ -39,7 +39,7 @@ func WithContextGetBooksById(ctx context.Context) gin.HandlerFunc {
 	}
 }
 
-func WithContextGetBooks(ctx context.Context) gin.HandlerFunc {
+func GetAllBooks(ctx context.Context) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		db, success := utils.GetDbFromContext(ctx)
 
