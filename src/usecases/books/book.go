@@ -2,6 +2,7 @@ package books
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net/http"
 
@@ -72,5 +73,55 @@ func WithContextGetAllBooks(ctx context.Context) gin.HandlerFunc {
 		}
 
 		c.JSON(http.StatusOK, response)
+	}
+}
+
+type BookDTO struct {
+	Title  string `json:"title" binding:"required"`
+	Author string `json:"author" binding:"required"`
+}
+
+func WithContextCreateBook(ctx context.Context) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		db, success := utils.GetDbFromContext(ctx)
+
+		if !success {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"message": "Sorry, we have a problem, please try again later.",
+			})
+			return
+		}
+
+		var body BookDTO
+
+		err := c.ShouldBindJSON(&body)
+
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"message": err.Error(),
+			})
+			return
+		}
+
+		book := &entities.Books{
+			Title:  body.Title,
+			Author: body.Author,
+		}
+
+		result := db.Create(book)
+
+		if result.Error != nil {
+			fmt.Println(result.Error)
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"message": "Sorry, we have a problem, please try again later.",
+			})
+			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{
+			"id":     book.ID,
+			"title":  book.Title,
+			"author": book.Author,
+		})
 	}
 }

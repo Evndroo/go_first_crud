@@ -13,4 +13,5 @@ func Configure(server *gin.Engine, ctx context.Context) {
 
 	booksServer.GET("/", books.WithContextGetAllBooks(ctx))
 	booksServer.GET("/:id", books.WithContextGetBooksById(ctx))
+	booksServer.POST("/", books.WithContextCreateBook(ctx))
 }
