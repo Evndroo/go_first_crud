@@ -15,4 +15,5 @@ func Configure(server *gin.Engine, ctx context.Context) {
 	booksServer.GET("/:id", books.WithContextGetBooksById(ctx))
 	booksServer.POST("/", books.WithContextCreateBook(ctx))
 	booksServer.PUT("/:id", books.WithContextUpdateBook(ctx))
+	booksServer.DELETE("/:id", books.WithContextDeleteBook(ctx))
 }
