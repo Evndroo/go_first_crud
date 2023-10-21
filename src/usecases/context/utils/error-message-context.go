@@ -6,12 +6,14 @@ import (
 
 type ErrorMessages struct {
 	InternalServerError string
+	InvalidIdBadRequest string
 }
 
 func WithErrorMessagesContext(ctx context.Context) context.Context {
 
 	errorMessages := ErrorMessages{
 		InternalServerError: "Sorry, we have a problem, please try again later.",
+		InvalidIdBadRequest: "Please send a valid id.",
 	}
 
 	return context.WithValue(ctx, "errorMessages", errorMessages)
