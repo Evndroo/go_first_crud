@@ -25,8 +25,17 @@ func WithContextGetBooksById(ctx context.Context) gin.HandlerFunc {
 			return
 		}
 
+		id, idErr := strconv.Atoi(c.Param("id"))
+
+		if idErr != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"message": errorMessages.InvalidIdBadRequest,
+			})
+			return
+		}
+
 		var book entities.Books
-		db.First(&book, c.Param("id"))
+		db.First(&book, id)
 
 		if book.ID == 0 {
 			c.Status(http.StatusNoContent)
@@ -80,7 +89,7 @@ func WithContextGetAllBooks(ctx context.Context) gin.HandlerFunc {
 	}
 }
 
-type BookDTO struct {
+type CreateBookDTO struct {
 	Title  string `json:"title" binding:"required"`
 	Author string `json:"author" binding:"required"`
 }
@@ -97,7 +106,7 @@ func WithContextCreateBook(ctx context.Context) gin.HandlerFunc {
 			return
 		}
 
-		var body BookDTO
+		var body CreateBookDTO
 
 		err := c.ShouldBindJSON(&body)
 
