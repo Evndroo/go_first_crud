@@ -2,7 +2,6 @@ package books
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"net/http"
 
@@ -13,12 +12,14 @@ import (
 )
 
 func WithContextGetBooksById(ctx context.Context) gin.HandlerFunc {
+	db, success := utils.GetDbFromContext(ctx)
+	errorMessages, _ := utils.GetErrorMessagesFromContext(ctx)
+
 	return func(c *gin.Context) {
-		db, success := utils.GetDbFromContext(ctx)
 
 		if !success {
 			c.JSON(http.StatusInternalServerError, gin.H{
-				"message": "Sorry, we have a problem, please try again later.",
+				"message": errorMessages.InternalServerError,
 			})
 			return
 		}
@@ -41,12 +42,14 @@ func WithContextGetBooksById(ctx context.Context) gin.HandlerFunc {
 }
 
 func WithContextGetAllBooks(ctx context.Context) gin.HandlerFunc {
+	db, success := utils.GetDbFromContext(ctx)
+	errorMessages, _ := utils.GetErrorMessagesFromContext(ctx)
+
 	return func(c *gin.Context) {
-		db, success := utils.GetDbFromContext(ctx)
 
 		if !success {
 			c.JSON(http.StatusInternalServerError, gin.H{
-				"message": "Sorry, we have a problem, please try again later.",
+				"message": errorMessages.InternalServerError,
 			})
 			return
 		}
@@ -57,7 +60,7 @@ func WithContextGetAllBooks(ctx context.Context) gin.HandlerFunc {
 		if result.Error != nil {
 			log.Fatalln("Error getting books: ", result.Error)
 			c.JSON(http.StatusInternalServerError, gin.H{
-				"message": "Sorry, we have a problem, please try again later.",
+				"message": errorMessages.InternalServerError,
 			})
 			return
 		}
@@ -82,12 +85,13 @@ type BookDTO struct {
 }
 
 func WithContextCreateBook(ctx context.Context) gin.HandlerFunc {
-	return func(c *gin.Context) {
-		db, success := utils.GetDbFromContext(ctx)
+	db, success := utils.GetDbFromContext(ctx)
+	errorMessages, _ := utils.GetErrorMessagesFromContext(ctx)
 
+	return func(c *gin.Context) {
 		if !success {
 			c.JSON(http.StatusInternalServerError, gin.H{
-				"message": "Sorry, we have a problem, please try again later.",
+				"message": errorMessages.InternalServerError,
 			})
 			return
 		}
@@ -111,9 +115,8 @@ func WithContextCreateBook(ctx context.Context) gin.HandlerFunc {
 		result := db.Create(book)
 
 		if result.Error != nil {
-			fmt.Println(result.Error)
 			c.JSON(http.StatusInternalServerError, gin.H{
-				"message": "Sorry, we have a problem, please try again later.",
+				"message": errorMessages.InternalServerError,
 			})
 			return
 		}

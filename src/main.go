@@ -29,6 +29,7 @@ func main() {
 	}
 
 	ctx = utils.WithDbContext(ctx, db)
+	ctx = utils.WithErrorMessagesContext(ctx)
 
 	server := gin.Default()
 
