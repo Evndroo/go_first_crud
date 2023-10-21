@@ -3,7 +3,7 @@ package books
 import (
 	"context"
 
-	"github.com/evndroo/src/usecases/books"
+	"github.com/evndroo/src/use-cases/books"
 
 	"github.com/gin-gonic/gin"
 )

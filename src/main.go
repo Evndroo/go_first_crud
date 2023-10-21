@@ -8,7 +8,7 @@ import (
 
 	"github.com/evndroo/src/config"
 	"github.com/evndroo/src/controllers/books"
-	"github.com/evndroo/src/usecases/context/utils"
+	"github.com/evndroo/src/use-cases/context/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )

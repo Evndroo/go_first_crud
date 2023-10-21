@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"github.com/evndroo/src/entities"
-	"github.com/evndroo/src/usecases/context/utils"
+	"github.com/evndroo/src/use-cases/context/utils"
 	"github.com/gin-gonic/gin"
 )
 

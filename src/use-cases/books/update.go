@@ -6,7 +6,7 @@ import (
 	"strconv"
 
 	"github.com/evndroo/src/entities"
-	"github.com/evndroo/src/usecases/context/utils"
+	"github.com/evndroo/src/use-cases/context/utils"
 	"github.com/gin-gonic/gin"
 )
 
@@ -53,7 +53,7 @@ func WithContextUpdateBook(ctx context.Context) gin.HandlerFunc {
 
 		if book.ID == 0 {
 			c.JSON(http.StatusBadRequest, gin.H{
-				"message": "No book found with this id.",
+				"message": "No book found where found with this id.",
 			})
 			return
 		}
