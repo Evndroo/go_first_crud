@@ -1,4 +1,4 @@
-package main
+package books
 
 import (
 	"context"
@@ -6,9 +6,8 @@ import (
 	"log"
 	"os"
 
-	"github.com/evndroo/src/config"
-	"github.com/evndroo/src/controllers/books"
-	"github.com/evndroo/src/use-cases/context/utils"
+	"github.com/evndroo/cmd/books/config"
+	"github.com/evndroo/cmd/context/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
@@ -33,7 +32,7 @@ func main() {
 
 	server := gin.Default()
 
-	books.Configure(server, ctx)
+	Configure(server, ctx)
 
 	server.Run()
 }

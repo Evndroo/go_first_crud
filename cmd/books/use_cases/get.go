@@ -1,4 +1,4 @@
-package books
+package use_cases
 
 import (
 	"context"
@@ -6,8 +6,9 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/evndroo/src/entities"
-	"github.com/evndroo/src/use-cases/context/utils"
+	"github.com/evndroo/cmd/books/entities"
+	"github.com/evndroo/cmd/context/utils"
+
 	"github.com/gin-gonic/gin"
 )
 
