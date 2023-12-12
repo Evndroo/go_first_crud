@@ -43,7 +43,7 @@ func WithContextCreateBook(ctx context.Context) gin.HandlerFunc {
 			Author: body.Author,
 		}
 
-		result := db.Create(book)
+		result := db.Create(&book)
 
 		if result.Error != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{

@@ -41,7 +41,7 @@ func WithContextDeleteBook(context context.Context) gin.HandlerFunc {
 			return
 		}
 
-		result := db.Delete(&id)
+		result := db.Delete(&book, id)
 
 		if result.Error != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{
