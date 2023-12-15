@@ -1,4 +1,4 @@
-package books
+package integration
 
 import (
 	"context"
@@ -7,26 +7,30 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/evndroo/cmd/books"
+	"github.com/evndroo/cmd/books/config"
+	"github.com/evndroo/cmd/books/router"
+	"github.com/evndroo/cmd/context/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 )
 
-func SetupSuite() {
-	// gin.EnvGinMode = gin.TestMode
+func SetupSuite(t *testing.T) {
+	httptest.NewRecorder()
+	ctx := context.Background()
+	server := gin.Default()
+	db, err := config.ConnectDB()
 
+	if err != nil {
+		t.FailNow()
+	}
+
+	ctx = utils.WithDbContext(ctx, db)
+	ctx = utils.WithErrorMessagesContext(ctx)
+
+	router.Configure(server, ctx)
 }
 
 func TestGetAllBooks(t *testing.T) {
-	server := gin.Default()
-	ctx := context.Background()
-
-	books.Configure(server, ctx)
-	httptest.NewRecorder()
-
-	fmt.Println(server)
-	fmt.Println("chegou aqui")
-
 	response, err := http.Get("/books")
 
 	fmt.Println(response)
